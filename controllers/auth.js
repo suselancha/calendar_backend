@@ -4,22 +4,31 @@ const { response } = require('express');
 const crearUsuario = (req, res = response) => {
 
     //console.log(req.body);
+    const { name, email, password } = req.body;
 
-    res.json({
+    res.status(201).json({
         ok: true,
         msg: 'registro',
-        user: req.body
+        //user: req.body
+        name,
+        email,
+        password
     })
 }
 
-const loginUsuario = (req, res) => {
+const loginUsuario = (req, res = response) => {
+
+    const { email, password } = req.body;
+
     res.json({
         ok: true,
-        msg: 'login'
+        msg: 'login',
+        email,
+        password
     })
 }
 
-const revalidarToken = (req, res) => {
+const revalidarToken = (req, res = response) => {
     res.json({
         ok: true,
         msg: 'renew'
