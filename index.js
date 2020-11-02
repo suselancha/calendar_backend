@@ -11,7 +11,7 @@ const app = express();
 //Base de Datos
 dbConnection();
 
-//CORS
+//CORS Capa de Seguridad del API
 app.use(cors());
 
 //Diretorio Público usando Middleware use
