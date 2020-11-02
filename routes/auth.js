@@ -11,6 +11,7 @@ const router = express.Router;*/
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validarJWT } = require('../middlewares/validar-jwt');
 const router = Router();
 
 //Desestructurar funcion que viene del controlador
@@ -35,11 +36,6 @@ router.post(
     ],
     loginUsuario );
 
-router.get(
-    '/renew',
-    [
-
-    ],
-    revalidarToken );
+router.get('/renew', validarJWT, revalidarToken );
 
 module.exports = router;
