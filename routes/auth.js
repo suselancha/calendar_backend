@@ -1,5 +1,4 @@
 /*
-    Rutas de Usuarios / Auth
     Acceso: host + /api/auth
 */
 
@@ -20,9 +19,10 @@ const { crearUsuario, loginUsuario, revalidarToken } = require('../controllers/a
 router.post(
     '/new',
     [ //Middlewares q se ejecutan secuencialmente
-        check('name', 'El nombre es obligatorio').not().isEmpty(),
-        check('email', 'El email es obligatorio').isEmail(),
-        check('password', 'El password debe de ser de 6 caracteres').isLength({ min:6 }),
+        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('apellido', 'El apellido es obligatorio').not().isEmpty(),
+        check('correo', 'El correo es obligatorio').isEmail(),
+        check('clave', 'El clave debe de ser de 6 caracteres').isLength({ min:6 }),
         validarCampos
     ],
     crearUsuario );
@@ -30,8 +30,8 @@ router.post(
 router.post(
     '/',
     [
-        check('email', 'El email es obligatorio').isEmail(),
-        check('password', 'El password debe de ser de 6 caracteres').isLength({ min:6 }),
+        check('correo', 'El correo es obligatorio').isEmail(),
+        check('clave', 'El clave debe de ser de 6 caracteres').isLength({ min:6 }),
         validarCampos
     ],
     loginUsuario );
