@@ -8,12 +8,14 @@ const crearUsuario = async(req, res = response) => {
 
     //console.log(req.body);
     const { correo, clave } = req.body;
+    correo2 = correo.toLowerCase(); //Correo todo en minuscula
+    //console.log(c);
 
     try {
         //let porque lo voy a renombrar y/o reutilizar
         //let usuario = await Usuario.findOne({ correo: correo }); --> Es lo mismo q abajo
-        let usuario = await Usuario.findOne({ correo });
-        //console.log(usuario);
+        let usuario = await Usuario.findOne({ correo:correo2 });
+        console.log(usuario);
 
         if ( usuario ) {
             return res.status(400).json({
@@ -23,6 +25,7 @@ const crearUsuario = async(req, res = response) => {
         }
         
         usuario = new Usuario(req.body);
+        usuario.correo = correo2;
         usuario.rol = "ADMIN";
         usuario.activo = true;
 
@@ -38,7 +41,7 @@ const crearUsuario = async(req, res = response) => {
         res.status(201).json({
             ok: true,
             uid: usuario.id,
-            name: usuario.nombre,
+            nombre: usuario.nombre,
             token
         })
 
@@ -87,7 +90,7 @@ const loginUsuario = async (req, res = response) => {
         res.json({
             ok: true,
             uid: usuario.id,
-            name: usuario.nombre,
+            nombre: usuario.nombre,
             token
         })
 
@@ -112,6 +115,8 @@ const revalidarToken = async(req, res = response) => {
 
     res.json({
         ok: true,
+        uid,
+        nombre,
         token
     })
 }
