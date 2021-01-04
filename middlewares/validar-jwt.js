@@ -1,6 +1,7 @@
 
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 const validarJWT = (req, res=response, next) => {
 
@@ -18,11 +19,17 @@ const validarJWT = (req, res=response, next) => {
     try {
 
         //const payload = jwt.verify(
-        const { uid, nombre } = jwt.verify( //Desesctructuro payload
+        const { uid, nombre, exp } = jwt.verify( //Desesctructuro payload
             token,
             process.env.SECRET_JWT_SEED
         );
 
+        if(exp <= moment.unix()) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'Token expirado'
+            });
+        }
         //console.log(nombre);
         req.uid = uid;
         req.nombre = nombre;
