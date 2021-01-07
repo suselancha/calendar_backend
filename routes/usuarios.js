@@ -6,7 +6,7 @@ const { Router } = require('express');
 const router = Router();
 
 //Desestructurar funcion que viene del controlador
-const { listarUsuarios } = require('../controllers/usuarios');
+const { listarUsuarios, listarUsuariosActivos } = require('../controllers/usuarios');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 /* Todos tiene que pasar por la validacion del Mimddleware JWT
@@ -15,5 +15,6 @@ Si necesito una ruta publica, la ubico antes*/
 router.use(validarJWT);
 
 router.get('/', listarUsuarios );
+router.get('/usuarios-activos', listarUsuariosActivos );
 
 module.exports = router;
