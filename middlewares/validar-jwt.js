@@ -3,6 +3,9 @@ const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 
+// ================
+// Verificar Token
+// ================
 const validarJWT = (req, res=response, next) => {
 
     //x-token en los HEADERS
@@ -19,7 +22,7 @@ const validarJWT = (req, res=response, next) => {
     try {
 
         //const payload = jwt.verify(
-        const { uid, nombre, exp } = jwt.verify( //Desesctructuro payload
+        const { uid, nombre, exp, rol } = jwt.verify( //Desesctructuro payload
             token,
             process.env.SECRET_JWT_SEED
         );
@@ -30,10 +33,10 @@ const validarJWT = (req, res=response, next) => {
                 msg: 'Token expirado'
             });
         }
-        //console.log(nombre);
+        //console.log(rol);
         req.uid = uid;
         req.nombre = nombre;
-
+        req.rol = rol;
         
     } catch (error) {
         return res.status(401).json({
@@ -44,8 +47,26 @@ const validarJWT = (req, res=response, next) => {
 
     next();
 
-}
+};
+
+// ================
+// Verificar AdminRol
+// ================
+const validaAdminRol = (req, res=response, next) => {
+
+    //console.log('ROL ACTUAL: ' + req.rol);
+    if(req.rol === 'ADMIN_ROLE') {
+        next();
+    } else {
+        return res.json({
+            ok: false,
+            msg: 'El usuario no es administrador'
+        });
+    }
+   
+};
 
 module.exports = {
-    validarJWT
+    validarJWT,
+    validaAdminRol
 }

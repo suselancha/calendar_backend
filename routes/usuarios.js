@@ -12,7 +12,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 /* Todos tiene que pasar por la validacion del Mimddleware JWT
 Cualquier peticion que se encuentre debajo de esto va a tener que tener su token (ruta protegida)
 Si necesito una ruta publica, la ubico antes*/
-router.use(validarJWT);
+//router.use(validarJWT);
 
 router.get('/', listarUsuarios );
 router.get('/usuarios-activos', listarUsuariosActivos );

@@ -26,8 +26,6 @@ const crearUsuario = async(req, res = response) => {
         
         usuario = new Usuario(req.body);
         usuario.correo = correo2;
-        usuario.rol = "ADMIN";
-        usuario.activo = true;
 
         //Encriptar contraseña
         const salt = bcrypt.genSaltSync();
@@ -36,7 +34,7 @@ const crearUsuario = async(req, res = response) => {
         await usuario.save();
 
         //Generar JWT
-        const token = await generarJWT(usuario.id, usuario.nombre);
+        const token = await generarJWT(usuario.id, usuario.nombre, usuario.rol);
 
         res.status(201).json({
             ok: true,
@@ -77,7 +75,7 @@ const loginUsuario = async (req, res = response) => {
             });
         }
 
-        if (!usuario.activo) {
+        if (!usuario.estado) {
             return res.status(200).json({
                 ok: false,
                 msg: 'Usuario No Activado'
@@ -85,7 +83,7 @@ const loginUsuario = async (req, res = response) => {
         }
 
         //Si existe el mail y el password es valido, generar nuestro JWT
-        const token = await generarJWT(usuario.id, usuario.nombre);
+        const token = await generarJWT(usuario.id, usuario.nombre, usuario.rol);
 
         res.json({
             ok: true,
@@ -108,10 +106,10 @@ const loginUsuario = async (req, res = response) => {
 const revalidarToken = async(req, res = response) => {
 
     //Desestructuro req
-    const { uid, nombre } = req;
+    const { uid, nombre, rol } = req;
 
     //Generar un nuevo JWT y retornarlo
-    const token = await generarJWT(uid, nombre);
+    const token = await generarJWT(uid, nombre, rol);
 
     res.json({
         ok: true,
