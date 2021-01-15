@@ -33,7 +33,7 @@ const listarUsuariosActivos = async(req, res = response) => {
     //console.log(req);
     const query = req.query;
     try {
-        const usuarios = await Usuario.find({ activo:query.activo});
+        const usuarios = await Usuario.find({ estado:query.estado});
 
         if ( !usuarios ) {
             return res.status(400).json({
